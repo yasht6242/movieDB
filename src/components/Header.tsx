@@ -45,8 +45,8 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            {/* <img src="/src/images/put.png" alt="MovieDB Logo" className="h-15 w-60" /> */}
-            <span className="text-2xl font-bold">MovieDB</span>
+            <img src="/src/images/put.png" alt="MovieDB Logo" className="h-15 w-60" />
+            {/* <span className="text-2xl font-bold">MovieDB</span> */}
           </Link>
 
           {/* Desktop Navigation */}
