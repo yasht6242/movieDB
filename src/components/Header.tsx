@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Film, Tv, Monitor, Heart, Search, Menu, X } from "lucide-react";
 import { tmdbService } from "../services/tmdb";
+import logo from "../images/logo_1576758635318.webp";
+
 
 const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,7 +47,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/src/images/logo_1576758635318.webp" alt="MovieDB Logo" className="h-15 w-60" />
+            <img src={logo} alt="logo" className="h-15 w-60" />
             {/* <span className="text-2xl font-bold">MovieDB</span> */}
           </Link>
 
