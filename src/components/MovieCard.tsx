@@ -13,6 +13,12 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, showType = false }) => {
   const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
   const isMovieFavorite = isFavorite(movie.id);
   console.log("MovieCard - Movie:", movie);
+
+  const getMovieSlug = () => {
+    const title = movie.title || movie.name || "unknown";
+    return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  };
+
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isMovieFavorite) {
@@ -41,7 +47,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, showType = false }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
       <div className="relative">
-        <Link to={`/${movie.media_type || "movie"}/${movie.id}`}>
+        <Link to={`/${movie.media_type || "movie"}/${getMovieSlug()}`} state={{ movieId: movie.id, mediaType: movie.media_type || "movie" }}>
           <img
             src={getPosterUrl(movie?.poster_path)}
             alt={getTitle()}
@@ -70,7 +76,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, showType = false }) => {
       </div>
 
       <div className="p-4">
-        <Link to={`/${movie.media_type || "movie"}/${movie.id}`}>
+        <Link to={`/${movie.media_type || "movie"}/${getMovieSlug()}`} state={{ movieId: movie.id, mediaType: movie.media_type || "movie" }}>
           <h3 className="font-bold text-lg mb-2 text-slate-900 hover:text-yellow-600 transition-colors line-clamp-1">
             {getTitle()}
           </h3>

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { tmdbService } from "../services/tmdb";
 import { MovieDetails } from "../types/movie";
 import { useFavorites } from "../context/FavoritesContext";
 import { Heart, Star, Calendar, Clock, ArrowLeft, Play } from "lucide-react";
 
 const MovieDetailPage: React.FC = () => {
-  const { media_type, id } = useParams();
-  console.log("Media Type:", media_type, "ID:", id);
+  const { media_type, slug } = useParams();
+  const location = useLocation();
+  const movieId = (location.state as any)?.movieId;
+  const mediaType = (location.state as any)?.mediaType || media_type;
+  console.log("Media Type:", mediaType, "ID:", movieId, "Slug:", slug);
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
@@ -16,24 +19,24 @@ const MovieDetailPage: React.FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchMovieDetails = async () => {
-      if (!id) return;
+      if (!movieId) return;
 
       try {
-        if (media_type === "tv") {
-          const tvDetails = await tmdbService.getTVDetails(parseInt(id));
-          const tvTrailer = await tmdbService.getTVTrailer(parseInt(id));
+        if (mediaType === "tv") {
+          const tvDetails = await tmdbService.getTVDetails(movieId);
+          const tvTrailer = await tmdbService.getTVTrailer(movieId);
           setTraier(tvTrailer);
           setMovie(tvDetails);
         } else {
-          const movieDetails = await tmdbService.getMovieDetails(parseInt(id));
+          const movieDetails = await tmdbService.getMovieDetails(movieId);
           setMovie(movieDetails);
-          const movieTrailer = await tmdbService.getMovieTrailer(parseInt(id));
+          const movieTrailer = await tmdbService.getMovieTrailer(movieId);
           setTraier(movieTrailer);
         }
 
         const actors = await tmdbService.getActors(
-          parseInt(id),
-          media_type || "movie"
+          movieId,
+          mediaType || "movie"
         );
         setActors(actors);
         console.log("Actors:", actors);
@@ -45,7 +48,7 @@ const MovieDetailPage: React.FC = () => {
     };
 
     fetchMovieDetails();
-  }, [id]);
+  }, [movieId, mediaType]);
 
   const handleFavoriteClick = () => {
     if (!movie) return;

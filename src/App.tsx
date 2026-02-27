@@ -24,7 +24,7 @@ function App() {
               <Route path="/web-series" element={<WebSeriesPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/search" element={<SearchPage />} />
-              <Route path="/:media_type/:id" element={<MovieDetailPage />} />
+              <Route path="/:media_type/:slug" element={<MovieDetailPage />} />
             </Routes>
           </main>
         </div>
