@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { getSiteConfig } from "../config/siteConfig";
 
 const Footer: React.FC = () => {
+  const config = getSiteConfig();
+
   return (
     <footer className="bg-slate-950 text-slate-200 py-10">
       <div className="container mx-auto px-4">
@@ -8,9 +11,7 @@ const Footer: React.FC = () => {
           <div>
             <h2 className="mb-4 text-xl font-semibold text-white">Movies Gig</h2>
             <p className="max-w-lg text-sm leading-7 text-slate-400">
-              putlocker.de.com is powered by Movies Gig. Explore films, trailers,
-              and reviews with a focus on story, craftsmanship, and cinematic
-              discovery.
+              {config.footerDescription}
             </p>
           </div>
 
@@ -43,7 +44,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="mb-4 text-lg font-semibold text-white">Contact</h3>
             <p className="text-sm leading-7 text-slate-400">
-              Email us at <a href="mailto:rohansingh51243@gmail.com" className="text-yellow-400 underline">rohansingh51243@gmail.com</a>
+              Email us at <a href={`mailto:${config.email}`} className="text-yellow-400 underline">{config.email}</a>
               <br />
               Thank you for joining our cinematic community.
             </p>
