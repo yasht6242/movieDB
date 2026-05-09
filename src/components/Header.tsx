@@ -4,10 +4,16 @@ import { Film, Tv, Monitor, Heart, Search, Menu, X } from "lucide-react";
 import { tmdbService } from "../services/tmdb";
 import logo from "../images/logo_1576758635318.webp";
 
+type Suggestion = {
+  id: number;
+  media_type?: string;
+  title?: string;
+  name?: string;
+};
 
 const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [debounceTimeout, setDebounceTimeout] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -32,9 +38,9 @@ const Header: React.FC = () => {
     } else {
       setSuggestions([]);
     }
-  }, [searchQuery]);
+  }, [searchQuery, debounceTimeout]);
 
-  const handleSuggestionClick = (item: any) => {
+  const handleSuggestionClick = (item: Suggestion) => {
     const type = item.media_type === "tv" ? "tv" : "movie";
     navigate(`/${type}/${item.id}`);
     setSearchQuery("");
@@ -45,15 +51,11 @@ const Header: React.FC = () => {
     <header className="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img src={logo} alt="logo" className="h-15 w-60" />
-            {/* <span className="text-2xl font-bold">MovieDB</span> */}
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {/* existing links... */}
             <Link to="/" className="hover:text-yellow-400">
               Home
             </Link>
@@ -87,7 +89,6 @@ const Header: React.FC = () => {
             </Link>
           </nav>
 
-          {/* Hamburger - Mobile */}
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="md:hidden ml-4 text-white"
@@ -95,7 +96,7 @@ const Header: React.FC = () => {
             <Menu className="h-6 w-6" />
           </button>
         </div>
-        {/* search box */}
+
         <form
           onSubmit={handleSearch}
           className="relative mt-5 w-full flex justify-end"
@@ -108,10 +109,8 @@ const Header: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search movies, TV shows..."
-              className="pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400
-             w-full sm:w-80 md:w-96 lg:w-[400px]"
+              className="pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full sm:w-80 md:w-96 lg:w-[400px]"
             />
-
             <Search className="absolute left-3 top-2.5 h-5 w-5 text-slate-400" />
           </div>
           {suggestions.length > 0 && (
@@ -133,7 +132,6 @@ const Header: React.FC = () => {
         </form>
       </div>
 
-      {/* Mobile Sidebar */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex">
           <div className="bg-slate-900 w-64 p-6 space-y-6 h-full">
@@ -181,11 +179,7 @@ const Header: React.FC = () => {
               </Link>
             </nav>
           </div>
-          {/* Click outside to close */}
-          <div
-            className="flex-1"
-            onClick={() => setMobileMenuOpen(false)}
-          ></div>
+          <div className="flex-1" onClick={() => setMobileMenuOpen(false)}></div>
         </div>
       )}
     </header>
